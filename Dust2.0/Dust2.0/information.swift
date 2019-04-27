@@ -22,16 +22,33 @@ class Class {
         self.courseNum = courseNum
         self.yearTaken = yearTaken
         self.semesterTaken = semesterTaken
-    }	
+    }
+    
+    func getSem() -> String {
+        switch self.semesterTaken {
+        case .SP:
+            return "SP"
+        case .FA:
+            return "FA"
+        case .SU:
+            return "SU"
+        case .WI:
+            return "WI"
+        }
+    }
 }
 
-//struct Course: Codable {
-//    var course : String
-//    var courseNum : Int
-//    var yearTaken : Int
-//    var semesterTaken : String
-//}
-//
-//struct Courses: Codable {
-//    var courses : [Course]
-//}
+struct Course : Codable {
+    var course : String
+    var distributions : [String]
+}
+
+struct Data : Codable {
+    var requirements : [Course]
+}
+
+struct Response : Codable {
+    var success : Bool
+    var data : Data
+}
+
