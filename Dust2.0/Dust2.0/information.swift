@@ -43,12 +43,8 @@ struct Course : Codable {
     var distributions : [String]
 }
 
-struct Data : Codable {
-    var requirements : [Course]
-}
-
 struct Response : Codable {
     var success : Bool
-    var data : Data
+    var data : [Course]
 }
 

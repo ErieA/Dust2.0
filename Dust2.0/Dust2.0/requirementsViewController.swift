@@ -24,7 +24,6 @@ class requirementsViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(requirementTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         view.addSubview(tableView)
-        print(req)
         setupConstraints()
     }
     
@@ -62,13 +61,13 @@ extension requirementsViewController: UITableViewDataSource {
     
     /// Tell the table view how many rows should be in each section
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return req.data.requirements.count
+        return req.data.count
         }
     
     /// Tell the table view what cell to display for each row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! requirementTableViewCell
-        let course = req.data.requirements[indexPath.row]
+        let course = req.data[indexPath.row]
         cell.configure(for: course)
         cell.selectionStyle = .none
         return cell

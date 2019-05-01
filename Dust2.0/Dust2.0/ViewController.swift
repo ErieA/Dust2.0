@@ -10,15 +10,32 @@ import UIKit
 protocol cellUpdaterDelegate: class {
     func updateCell(index: Int, cell: courseTableViewCell, course: String, courseNum: Int, semester: String, year: Int)
 }
-class ViewController: UIViewController {
+protocol fieldUpdatersProtocol {
+    func update(_ clss: String, type: String)
+    
+}
+class ViewController: UIViewController, fieldUpdatersProtocol {
+    func update(_ clss: String, type: String) {
+        if type == "Class" {
+            self.currentClass = clss
+        } else if type == "Year" {
+            self.currentYear = Int(clss) ?? -1
+        } else if type == "Semester" {
+            self.currentSemester = clss
+        }
+    }
+    
+    var currentClass : String = ""
+    var currentYear : Int = -1
+    var currentSemester : String = ""
     var classLabel: UILabel!
     var yearLabel: UILabel!
     var semesterLabel: UILabel!
     var classNumLabel: UILabel!
     
-    var classField: UITextField!
-    var yearField: UITextField!
-    var semesterField: UITextField!
+    var classField: dropDown!
+    var yearField: dropDown!
+    var semesterField: dropDown!
     var classNumField: UITextField!
     
     var padding: CGFloat = 16
@@ -59,30 +76,14 @@ class ViewController: UIViewController {
         semesterLabel.text = "Semester:"
         view.addSubview(semesterLabel)
         
-        classField = UITextField()
-        classField.translatesAutoresizingMaskIntoConstraints = false
-        classField.isEnabled = true
-        classField.borderStyle = .roundedRect
-        view.addSubview(classField)
+        
 
         classNumField = UITextField()
         classNumField.translatesAutoresizingMaskIntoConstraints = false
         classNumField.isEnabled = true
+        classNumField.delegate = self
         classNumField.borderStyle = .roundedRect
         view.addSubview(classNumField)
-
-        yearField = UITextField()
-        yearField.translatesAutoresizingMaskIntoConstraints = false
-        yearField.isEnabled = true
-        yearField.borderStyle = .roundedRect
-        view.addSubview(yearField)
-
-        semesterField = UITextField()
-        semesterField.translatesAutoresizingMaskIntoConstraints = false
-        semesterField.isEnabled = true
-        semesterField.borderStyle = .roundedRect
-        view.addSubview(semesterField)
-
         
         addButton = UIButton()
         addButton.translatesAutoresizingMaskIntoConstraints = false
@@ -104,6 +105,32 @@ class ViewController: UIViewController {
         classTableView.dataSource = self
         classTableView.register(courseTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         view.addSubview(classTableView)
+        
+        
+        let yearOptions = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"]
+        yearField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: yearOptions, type: "Year")
+        yearField.translatesAutoresizingMaskIntoConstraints = false
+        yearField.isEnabled = true
+        yearField.setTitle("Select Year", for: .normal)
+        yearField.setTitleColor(.black, for: .normal)
+        view.addSubview(yearField)
+        
+        let semesterOptions = ["FA", "WI", "SP", "SU"]
+        semesterField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: semesterOptions, type: "Semester")
+        semesterField.translatesAutoresizingMaskIntoConstraints = false
+        semesterField.isEnabled = true
+        semesterField.setTitle("Select Semester", for: .normal)
+        semesterField.setTitleColor(.black, for: .normal)
+        view.addSubview(semesterField)
+
+        
+        let classOptions = ["MATH", "ENGL", "CS", "MUSIC"]
+        classField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: classOptions, type: "Class")
+        classField.translatesAutoresizingMaskIntoConstraints = false
+        classField.isEnabled = true
+        classField.setTitle("Select Subject", for: .normal)
+        classField.setTitleColor(.black, for: .normal)
+        view.addSubview(classField)
         
         setupConstraints()
     }
@@ -163,17 +190,17 @@ class ViewController: UIViewController {
     }
     
     @objc func classAdder() {
-        let course = classField.text
-        let classNum = classNumField.text
-        let semester = semesterField.text
-        let year = yearField.text
-        if let c = course, c != "", let cn = classNum, cn != "", let s = semester, s != "", let y = year, y != ""{
-            let newClass = Class(course: c, courseNum: 1101, yearTaken: 2018, semesterTaken: .FA)
-            courses.append(newClass)
-            classTableView.reloadData()
-        } else {
-            
-        }
+//        let course = classField.text
+//        let classNum = classNumField.text
+//        let semester = semesterField.text
+//        let year = yearField.text
+//        if let c = course, c != "", let cn = classNum, cn != "", let s = semester, s != "", let y = year, y != ""{
+//            let newClass = Class(course: c, courseNum: 1101, yearTaken: 2018, semesterTaken: .FA)
+//            courses.append(newClass)
+//            classTableView.reloadData()
+//        } else {
+//
+//        }
         
     }
     
@@ -189,16 +216,36 @@ class ViewController: UIViewController {
                 ]
                 jsonObj.append(jsonObjCourse)
             }
-            let c1 = Course(course: "FA18 MATH 1920", distributions: ["(MQR-AS)","",""])
-            let c2 = Course(course: "SP16 CS 1110", distributions: ["(MQR)","",""])
-            let c3 = Course(course: "SP19 MUSIC 3480", distributions: ["CA-AS","(GB)",""])
-            let c4 = Course(course: "SP19 INFO 3300", distributions: ["","",""])
             
-            let data = Data(requirements: [c1,c2,c3,c4])
-            let response = Response(success: true, data: data)
-            let controller = requirementsViewController(response: response)
-            navigationController?.pushViewController(controller, animated: true)
-            
+            let newjson : [String : Any] = [
+                "courses" :
+                    [
+                    [
+                        "subject" : "MATH",
+                        "number" : 1920,
+                        "semester" : "FA",
+                        "year" : 17
+                    ],
+                    [
+                        "subject" : "CS",
+                        "number" : 1110,
+                        "semester" : "FA",
+                        "year" : 18
+                    ],
+                    [
+                        "subject" : "MUSIC",
+                        "number" : 3480,
+                        "semester" : "SP",
+                        "year" : 19
+                    ]
+                    ]
+            ]
+            NetworkManager.checkRequirements(classes: newjson) { response in
+                DispatchQueue.main.async {
+                    let controller = requirementsViewController(response: response)
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }
+            }
         }
     }
     override func didReceiveMemoryWarning() {
@@ -250,3 +297,156 @@ extension ViewController: cellUpdaterDelegate {
         
 }
 
+extension ViewController : UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
+        if textField == yearField || textField == classNumField {
+            let allowedCharacters = CharacterSet.decimalDigits
+            let characterSet = CharacterSet(charactersIn: string)
+            return allowedCharacters.isSuperset(of: characterSet)
+        } else {
+            return true
+        }
+    }
+}
+
+protocol dropDownProtocol {
+    func dropDownButtonPressed(str: String, type: String)
+}
+
+class dropDown : UIButton, dropDownProtocol {
+    func dropDownButtonPressed(str: String, type: String) {
+        self.setTitle(str, for: .normal)
+        self.closeDropDown()
+        if type == "Semester" {
+            
+        } else if type == "Class" {
+            
+        } else if type == "Year" {
+            
+        }
+    }
+    
+    
+    var dropView : dropDownView!
+    var height = NSLayoutConstraint()
+    var isOpen = false
+    var type : String!
+    
+    init(frame: CGRect, options: [String], type: String) {
+        super.init(frame: frame)
+        self.type = type
+        dropView = dropDownView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: options, type: type)
+        dropView.delegate = self
+        dropView.translatesAutoresizingMaskIntoConstraints = false
+        
+    }
+    
+    override func didMoveToSuperview() {
+        self.superview?.addSubview(dropView)
+        setupConstraints()
+        self.superview?.bringSubviewToFront(dropView)
+        height = dropView.heightAnchor.constraint(equalToConstant: 0)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            dropView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            dropView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            dropView.topAnchor.constraint(equalTo: self.bottomAnchor)
+            ])
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if isOpen {
+            isOpen = false
+            NSLayoutConstraint.deactivate([self.height])
+            self.height.constant = 0
+            NSLayoutConstraint.activate([self.height])
+            UIView.animate(withDuration: 0.5) {
+                self.dropView.center.y -= self.dropView.frame.height / 2
+                self.dropView.layoutIfNeeded()
+            }
+        } else {
+            isOpen = true
+            NSLayoutConstraint.deactivate([self.height])
+            if self.dropView.tableView.contentSize.height > 200 {
+                self.height.constant = 300
+            } else {
+                self.height.constant = self.dropView.tableView.contentSize.height
+            }
+            NSLayoutConstraint.activate([self.height])
+            UIView.animate(withDuration: 0.5) {
+                self.dropView.layoutIfNeeded()
+                self.dropView.center.y += self.dropView.frame.height / 2
+            }
+        }
+    }
+    
+    func closeDropDown() {
+        isOpen = false
+        NSLayoutConstraint.deactivate([self.height])
+        self.height.constant = 0
+        NSLayoutConstraint.activate([self.height])
+        UIView.animate(withDuration: 0.5) {
+            self.dropView.center.y -= self.dropView.frame.height / 2
+            self.dropView.layoutIfNeeded()
+        }
+    }
+}
+
+class dropDownView : UIView, UITableViewDelegate, UITableViewDataSource {
+    var options : [String]!
+    var tableView : UITableView!
+    var delegate : dropDownProtocol!
+    var updateDelegate : fieldUpdatersProtocol!
+    var type : String!
+
+    init(frame: CGRect, options: [String], type: String) {
+        super.init(frame: frame)
+        self.options = options
+        self.type = type
+//        self.updateDelegate
+//        figure out how to set updateDelegate to to view controller
+        tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.addSubview(tableView)
+        
+        setupConstraints()
+    }
+    
+    func setupConstraints() {
+        NSLayoutConstraint.activate([
+            tableView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            tableView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            tableView.topAnchor.constraint(equalTo: self.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            ])
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return options.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = options[indexPath.row]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate.dropDownButtonPressed(str: options[indexPath.row], type: type)
+        
+    }
+}

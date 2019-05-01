@@ -14,9 +14,13 @@
 		7A34BFB8227360AE00C6AAE3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34BFB7227360AE00C6AAE3 /* ViewController.swift */; };
 		7A34BFBD227360B400C6AAE3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A34BFBC227360B400C6AAE3 /* Assets.xcassets */; };
 		7A34BFC8227366E400C6AAE3 /* information.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A34BFC7227366E400C6AAE3 /* information.swift */; };
+		9089B4B704D795935353AC21 /* Pods_Dust2_0.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39BB99B3F86F348ADCA8FD73 /* Pods_Dust2_0.framework */; };
+		F52F71FE2277F22D006EB39D /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52F71FD2277F22D006EB39D /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3330A35507A796231FD40421 /* Pods-Dust2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dust2.0.release.xcconfig"; path = "Target Support Files/Pods-Dust2.0/Pods-Dust2.0.release.xcconfig"; sourceTree = "<group>"; };
+		39BB99B3F86F348ADCA8FD73 /* Pods_Dust2_0.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dust2_0.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A0B3A112273D84C00FEAC40 /* courseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = courseTableViewCell.swift; sourceTree = "<group>"; };
 		7A0B3A132273DEA000FEAC40 /* requirementsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = requirementsViewController.swift; sourceTree = "<group>"; };
 		7A0B3A152273E07700FEAC40 /* requirementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = requirementTableViewCell.swift; sourceTree = "<group>"; };
@@ -26,6 +30,8 @@
 		7A34BFBC227360B400C6AAE3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7A34BFC1227360B400C6AAE3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A34BFC7227366E400C6AAE3 /* information.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = information.swift; sourceTree = "<group>"; };
+		B6E49BCD93F5C4119AB8F476 /* Pods-Dust2.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dust2.0.debug.xcconfig"; path = "Target Support Files/Pods-Dust2.0/Pods-Dust2.0.debug.xcconfig"; sourceTree = "<group>"; };
+		F52F71FD2277F22D006EB39D /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +39,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9089B4B704D795935353AC21 /* Pods_Dust2_0.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		512C13275AF29E373568E6C1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B6E49BCD93F5C4119AB8F476 /* Pods-Dust2.0.debug.xcconfig */,
+				3330A35507A796231FD40421 /* Pods-Dust2.0.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		7A34BFA9227360AD00C6AAE3 = {
 			isa = PBXGroup;
 			children = (
 				7A34BFB4227360AE00C6AAE3 /* Dust2.0 */,
 				7A34BFB3227360AE00C6AAE3 /* Products */,
+				512C13275AF29E373568E6C1 /* Pods */,
+				E8FA6336C79BC91DB1E8FB3F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,6 +79,7 @@
 				7A34BFB5227360AE00C6AAE3 /* AppDelegate.swift */,
 				7A34BFB7227360AE00C6AAE3 /* ViewController.swift */,
 				7A34BFC7227366E400C6AAE3 /* information.swift */,
+				F52F71FD2277F22D006EB39D /* NetworkManager.swift */,
 				7A0B3A132273DEA000FEAC40 /* requirementsViewController.swift */,
 				7A0B3A112273D84C00FEAC40 /* courseTableViewCell.swift */,
 				7A0B3A152273E07700FEAC40 /* requirementTableViewCell.swift */,
@@ -70,6 +89,14 @@
 			path = Dust2.0;
 			sourceTree = "<group>";
 		};
+		E8FA6336C79BC91DB1E8FB3F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				39BB99B3F86F348ADCA8FD73 /* Pods_Dust2_0.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -77,9 +104,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7A34BFC4227360B400C6AAE3 /* Build configuration list for PBXNativeTarget "Dust2.0" */;
 			buildPhases = (
+				1F473F5DACDEB8433DBB1465 /* [CP] Check Pods Manifest.lock */,
 				7A34BFAE227360AD00C6AAE3 /* Sources */,
 				7A34BFAF227360AD00C6AAE3 /* Frameworks */,
 				7A34BFB0227360AD00C6AAE3 /* Resources */,
+				22ECF7D54883FCC26162EEFF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -134,6 +163,53 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1F473F5DACDEB8433DBB1465 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Dust2.0-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		22ECF7D54883FCC26162EEFF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Dust2.0/Pods-Dust2.0-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Dust2.0/Pods-Dust2.0-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		7A34BFAE227360AD00C6AAE3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -142,6 +218,7 @@
 				7A0B3A122273D84C00FEAC40 /* courseTableViewCell.swift in Sources */,
 				7A0B3A162273E07700FEAC40 /* requirementTableViewCell.swift in Sources */,
 				7A34BFB8227360AE00C6AAE3 /* ViewController.swift in Sources */,
+				F52F71FE2277F22D006EB39D /* NetworkManager.swift in Sources */,
 				7A34BFC8227366E400C6AAE3 /* information.swift in Sources */,
 				7A34BFB6227360AE00C6AAE3 /* AppDelegate.swift in Sources */,
 				7A0B3A142273DEA000FEAC40 /* requirementsViewController.swift in Sources */,
@@ -269,6 +346,7 @@
 		};
 		7A34BFC5227360B400C6AAE3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6E49BCD93F5C4119AB8F476 /* Pods-Dust2.0.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -287,6 +365,7 @@
 		};
 		7A34BFC6227360B400C6AAE3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3330A35507A796231FD40421 /* Pods-Dust2.0.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
