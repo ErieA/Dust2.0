@@ -7,8 +7,15 @@
 //
 
 import Foundation
-class Class {
-    static var coursesOfStudy: [String : String] = ["Mathematics" : "MATH", "Applied Economics & Management" : "AEM", "Agricultural & Life Sciences" : "ALS", "Animal Science" : "ANSC", "Astronomy" : "ASTRO", "Computer Science" : "CS", "Physics" : "PHYS"]
+class Class : Equatable {
+    static func == (lhs: Class, rhs: Class) -> Bool {
+        if lhs.course == rhs.course && lhs.courseNum == rhs.courseNum && lhs.yearTaken == rhs.yearTaken && lhs.semesterTaken == rhs.semesterTaken {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     enum Semester {
         case FA, SP, SU, WI
     }
@@ -46,5 +53,9 @@ struct Course : Codable {
 struct Response : Codable {
     var success : Bool
     var data : [Course]
+}
+struct getResponse : Codable {
+    var success : Bool
+    var data : [String]
 }
 

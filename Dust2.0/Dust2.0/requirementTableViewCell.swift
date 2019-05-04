@@ -45,12 +45,16 @@ class requirementTableViewCell: UITableViewCell {
     func configure(for course: Course) {
         subjectLabel.text = course.course
         var str : String = ""
-        for s in course.distributions {
-//            i will fix this later	
-            if str == "" {
-                str = s
-            } else {
-                str = str + ", " + s
+        for var s in course.distributions {
+            if s == "First-Year Writing Seminar." {
+                s = "(FWS)"
+            }
+            if s != "" {
+                if str != "" {
+                    str = str + ", " + s
+                } else {
+                    str = s
+                }
             }
         }
         distLabel.text = str
@@ -59,8 +63,4 @@ class requirementTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-
-
 }

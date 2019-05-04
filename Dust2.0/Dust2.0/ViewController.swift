@@ -12,7 +12,8 @@ protocol cellUpdaterDelegate: class {
 }
 protocol fieldUpdatersProtocol {
     func update(_ clss: String, type: String)
-    
+    func currentYr() -> String
+    func currentSem() -> String
 }
 class ViewController: UIViewController, fieldUpdatersProtocol {
     func update(_ clss: String, type: String) {
@@ -23,6 +24,12 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         } else if type == "Semester" {
             self.currentSemester = clss
         }
+    }
+    func currentYr() -> String {
+        return String(currentYear)
+    }
+    func currentSem() -> String{
+        return currentSemester
     }
     
     var currentClass : String = ""
@@ -76,25 +83,31 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         semesterLabel.text = "Semester:"
         view.addSubview(semesterLabel)
         
-        
-
         classNumField = UITextField()
         classNumField.translatesAutoresizingMaskIntoConstraints = false
         classNumField.isEnabled = true
         classNumField.delegate = self
-        classNumField.borderStyle = .roundedRect
+        classNumField.layer.cornerRadius = 5
+        classNumField.layer.borderWidth = 1
+        classNumField.layer.borderColor = UIColor.gray.cgColor
         view.addSubview(classNumField)
         
         addButton = UIButton()
+        addButton.layer.cornerRadius = 5
+        addButton.layer.borderWidth = 1
+        addButton.layer.borderColor = UIColor.gray.cgColor
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.setTitle("Add Course", for: .normal)
+        addButton.setTitle("  Add Course  ", for: .normal)
         addButton.setTitleColor(.black, for: .normal)
         addButton.addTarget(self, action: #selector(classAdder), for: .touchUpInside)
         view.addSubview(addButton)
         
         checkCoursesButton = UIButton()
+        checkCoursesButton.layer.cornerRadius = 5
+        checkCoursesButton.layer.borderWidth = 1
+        checkCoursesButton.layer.borderColor = UIColor.gray.cgColor
         checkCoursesButton.translatesAutoresizingMaskIntoConstraints = false
-        checkCoursesButton.setTitle("Check Requirements", for: .normal)
+        checkCoursesButton.setTitle("  Check Requirements  ", for: .normal)
         checkCoursesButton.setTitleColor(.black, for: .normal)
         checkCoursesButton.addTarget(self, action: #selector(checkRequirements), for: .touchUpInside)
         view.addSubview(checkCoursesButton)
@@ -106,51 +119,71 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         classTableView.register(courseTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         view.addSubview(classTableView)
         
-        
-        let yearOptions = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"]
-        yearField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: yearOptions, type: "Year")
-        yearField.translatesAutoresizingMaskIntoConstraints = false
-        yearField.isEnabled = true
-        yearField.setTitle("Select Year", for: .normal)
-        yearField.setTitleColor(.black, for: .normal)
-        view.addSubview(yearField)
-        
-        let semesterOptions = ["FA", "WI", "SP", "SU"]
-        semesterField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: semesterOptions, type: "Semester")
-        semesterField.translatesAutoresizingMaskIntoConstraints = false
-        semesterField.isEnabled = true
-        semesterField.setTitle("Select Semester", for: .normal)
-        semesterField.setTitleColor(.black, for: .normal)
-        view.addSubview(semesterField)
-
-        
-        let classOptions = ["MATH", "ENGL", "CS", "MUSIC"]
-        classField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: classOptions, type: "Class")
+        classField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: [], type: "Class")
+        classField.layer.cornerRadius = 5
+        classField.layer.borderWidth = 1
+        classField.layer.borderColor = UIColor.gray.cgColor
+        classField.updateDelegate = self
         classField.translatesAutoresizingMaskIntoConstraints = false
         classField.isEnabled = true
         classField.setTitle("Select Subject", for: .normal)
         classField.setTitleColor(.black, for: .normal)
         view.addSubview(classField)
         
+        let semesterOptions = ["FA", "WI", "SP", "SU"]
+        semesterField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: semesterOptions, type: "Semester")
+        semesterField.layer.cornerRadius = 5
+        semesterField.layer.borderWidth = 1
+        semesterField.layer.borderColor = UIColor.gray.cgColor
+        semesterField.updateDelegate = self
+        semesterField.translatesAutoresizingMaskIntoConstraints = false
+        semesterField.isEnabled = true
+        semesterField.setTitle("Select Semester", for: .normal)
+        semesterField.setTitleColor(.black, for: .normal)
+        view.addSubview(semesterField)
+        
+        let yearOptions = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"]
+        yearField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: yearOptions.reversed(), type: "Year")
+        yearField.layer.cornerRadius = 5
+        yearField.layer.borderWidth = 1
+        yearField.layer.borderColor = UIColor.gray.cgColor
+        yearField.updateDelegate = self
+        yearField.translatesAutoresizingMaskIntoConstraints = false
+        yearField.isEnabled = true
+        yearField.setTitle("Select Year", for: .normal)
+        yearField.setTitleColor(.black, for: .normal)
+        view.addSubview(yearField)
+        
         setupConstraints()
     }
     
     func setupConstraints() {
+        
+        NSLayoutConstraint.activate([
+            yearLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: padding),
+            yearLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding)
+            ])
+        NSLayoutConstraint.activate([
+            yearField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -padding),
+            yearField.topAnchor.constraint(equalTo: yearLabel.topAnchor),
+            yearField.widthAnchor.constraint(equalToConstant: 150)
+            ])
+        NSLayoutConstraint.activate([
+            semesterLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: padding),
+            semesterLabel.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant: padding)
+            ])
+        NSLayoutConstraint.activate([
+            semesterField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -padding),
+            semesterField.topAnchor.constraint(equalTo: semesterLabel.topAnchor),
+            semesterField.widthAnchor.constraint(equalToConstant: 150)
+            ])
         NSLayoutConstraint.activate([
             classLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: padding),
-            classLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding)
+            classLabel.topAnchor.constraint(equalTo: semesterLabel.bottomAnchor, constant: padding)
             ])
         NSLayoutConstraint.activate([
             classNumLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: padding),
             classNumLabel.topAnchor.constraint(equalTo: classLabel.bottomAnchor, constant: padding)
-            ])
-        NSLayoutConstraint.activate([
-            semesterLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: padding),
-            semesterLabel.topAnchor.constraint(equalTo: classNumLabel.bottomAnchor, constant: padding)
-            ])
-        NSLayoutConstraint.activate([
-            yearLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: padding),
-            yearLabel.topAnchor.constraint(equalTo: semesterLabel.bottomAnchor, constant: padding)
             ])
         
         NSLayoutConstraint.activate([
@@ -161,22 +194,15 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         NSLayoutConstraint.activate([
             classNumField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -padding),
             classNumField.topAnchor.constraint(equalTo: classNumLabel.topAnchor),
-            classNumField.widthAnchor.constraint(equalToConstant: 150)
+            classNumField.widthAnchor.constraint(equalToConstant: 150),
+            classNumField.heightAnchor.constraint(equalTo: classField.heightAnchor)
             ])
-        NSLayoutConstraint.activate([
-            semesterField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -padding),
-            semesterField.topAnchor.constraint(equalTo: semesterLabel.topAnchor),
-            semesterField.widthAnchor.constraint(equalToConstant: 150)
-            ])
-        NSLayoutConstraint.activate([
-            yearField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -padding),
-            yearField.topAnchor.constraint(equalTo: yearLabel.topAnchor),
-            yearField.widthAnchor.constraint(equalToConstant: 150)
-            ])
+        
+        
         NSLayoutConstraint.activate([
             classTableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -padding),
             classTableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: padding),
-            classTableView.topAnchor.constraint(equalTo: yearLabel.bottomAnchor, constant: padding),
+            classTableView.topAnchor.constraint(equalTo: classNumField.bottomAnchor, constant: padding),
             classTableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -padding)
             ])
         NSLayoutConstraint.activate([
@@ -190,17 +216,39 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
     }
     
     @objc func classAdder() {
-//        let course = classField.text
-//        let classNum = classNumField.text
-//        let semester = semesterField.text
-//        let year = yearField.text
-//        if let c = course, c != "", let cn = classNum, cn != "", let s = semester, s != "", let y = year, y != ""{
-//            let newClass = Class(course: c, courseNum: 1101, yearTaken: 2018, semesterTaken: .FA)
-//            courses.append(newClass)
-//            classTableView.reloadData()
-//        } else {
-//
-//        }
+        let course = currentClass
+        let classNum = Int(classNumField.text ?? "-1") ?? -1
+        let semester = currentSemester
+        let year = currentYear
+        if course != "", classNum != -1, semester != "", year != -1 {
+            if semester == "FA" {
+                let newClass = Class(course: course, courseNum: classNum, yearTaken: year, semesterTaken: .FA)
+                if courses.firstIndex(of: newClass) == nil {
+                    courses.append(newClass)
+                    classTableView.reloadData()
+                }
+            } else if semester == "WI" {
+                let newClass = Class(course: course, courseNum: classNum, yearTaken: year, semesterTaken: .WI)
+                if courses.firstIndex(of: newClass) == nil {
+                    courses.append(newClass)
+                    classTableView.reloadData()
+                }
+            } else if semester == "SP" {
+                let newClass = Class(course: course, courseNum: classNum, yearTaken: year, semesterTaken: .SP)
+                if courses.firstIndex(of: newClass) == nil {
+                    courses.append(newClass)
+                    classTableView.reloadData()
+                }
+            } else {
+                let newClass = Class(course: course, courseNum: classNum, yearTaken: year, semesterTaken: .SU)
+                if courses.firstIndex(of: newClass) == nil {
+                    courses.append(newClass)
+                    classTableView.reloadData()
+                }
+            }
+        } else {
+
+        }
         
     }
     
@@ -216,29 +264,8 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
                 ]
                 jsonObj.append(jsonObjCourse)
             }
-            
             let newjson : [String : Any] = [
-                "courses" :
-                    [
-                    [
-                        "subject" : "MATH",
-                        "number" : 1920,
-                        "semester" : "FA",
-                        "year" : 17
-                    ],
-                    [
-                        "subject" : "CS",
-                        "number" : 1110,
-                        "semester" : "FA",
-                        "year" : 18
-                    ],
-                    [
-                        "subject" : "MUSIC",
-                        "number" : 3480,
-                        "semester" : "SP",
-                        "year" : 19
-                    ]
-                    ]
+                "courses" : jsonObj
             ]
             NetworkManager.checkRequirements(classes: newjson) { response in
                 DispatchQueue.main.async {
@@ -284,12 +311,23 @@ extension ViewController: UITableViewDelegate {
     
     /// Tell the table view what should happen if we select a row
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //DELETE HERE
     }
     
     /// Tell the table view what should happen if we deselect a row
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            courses.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
+    }
 }
 extension ViewController: cellUpdaterDelegate {
     func updateCell(index: Int, cell: courseTableViewCell, course: String, courseNum: Int, semester: String, year: Int) {
@@ -318,13 +356,7 @@ class dropDown : UIButton, dropDownProtocol {
     func dropDownButtonPressed(str: String, type: String) {
         self.setTitle(str, for: .normal)
         self.closeDropDown()
-        if type == "Semester" {
-            
-        } else if type == "Class" {
-            
-        } else if type == "Year" {
-            
-        }
+        updateDelegate.update(str, type: type)
     }
     
     
@@ -332,12 +364,14 @@ class dropDown : UIButton, dropDownProtocol {
     var height = NSLayoutConstraint()
     var isOpen = false
     var type : String!
+    var updateDelegate : fieldUpdatersProtocol!
     
     init(frame: CGRect, options: [String], type: String) {
         super.init(frame: frame)
         self.type = type
         dropView = dropDownView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: options, type: type)
         dropView.delegate = self
+        dropView.updateDelegate = updateDelegate
         dropView.translatesAutoresizingMaskIntoConstraints = false
         
     }
@@ -360,6 +394,12 @@ class dropDown : UIButton, dropDownProtocol {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if updateDelegate.currentSem() != "" && updateDelegate.currentYr() != "-1"  && type == "Class" {
+            let semester = updateDelegate.currentSem() + updateDelegate.currentYr()
+            NetworkManager.getSemesterClasses(semester: semester) { (response) in
+                self.dropView.updateOptions(newOptions: response.data)
+            }
+        }
         if isOpen {
             isOpen = false
             NSLayoutConstraint.deactivate([self.height])
@@ -408,8 +448,6 @@ class dropDownView : UIView, UITableViewDelegate, UITableViewDataSource {
         super.init(frame: frame)
         self.options = options
         self.type = type
-//        self.updateDelegate
-//        figure out how to set updateDelegate to to view controller
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -419,7 +457,10 @@ class dropDownView : UIView, UITableViewDelegate, UITableViewDataSource {
         
         setupConstraints()
     }
-    
+    func updateOptions(newOptions: [String]) {
+        options = newOptions
+        tableView.reloadData()
+    }
     func setupConstraints() {
         NSLayoutConstraint.activate([
             tableView.rightAnchor.constraint(equalTo: self.rightAnchor),
