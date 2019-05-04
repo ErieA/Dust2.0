@@ -23,6 +23,9 @@ class requirementsViewController: UIViewController {
 
         tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.layer.cornerRadius = 5
+        tableView.layer.borderWidth = 1
+        tableView.layer.borderColor = UIColor.gray.cgColor
         tableView.dataSource = self
         tableView.register(requirementTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         view.addSubview(tableView)
@@ -37,10 +40,10 @@ class requirementsViewController: UIViewController {
         fwsLabel.translatesAutoresizingMaskIntoConstraints = false
         fwsLabel.backgroundColor = .white
         if meetsFWS(reqsMet) {
-            fwsLabel.text = "FWS requirements met"
+            fwsLabel.text = "  FWS requirements met"
             fwsLabel.textColor = .blue
         } else {
-            fwsLabel.text = "FWS requirements NOT met"
+            fwsLabel.text = "  FWS requirements NOT met"
             fwsLabel.textColor = .red
         }
         view.addSubview(fwsLabel)
@@ -49,10 +52,10 @@ class requirementsViewController: UIViewController {
         pbs_mqrLabel.backgroundColor = .white
         pbs_mqrLabel.translatesAutoresizingMaskIntoConstraints = false
         if meetsPBS_MQR_AS(reqsMet) {
-            pbs_mqrLabel.text = "PBS and MQR requirements met"
+            pbs_mqrLabel.text = "  PBS and MQR requirements met"
             pbs_mqrLabel.textColor = .blue
         } else {
-            pbs_mqrLabel.text = "PBS and MQR requirements NOT met"
+            pbs_mqrLabel.text = "  PBS and MQR requirements NOT met"
             pbs_mqrLabel.textColor = .red
         }
         view.addSubview(pbs_mqrLabel)
@@ -61,10 +64,10 @@ class requirementsViewController: UIViewController {
         asCoursesLabel.backgroundColor = .white
         asCoursesLabel.translatesAutoresizingMaskIntoConstraints = false
         if meetsOthers(reqsMet) {
-            asCoursesLabel.text = "A&S category requirements met"
+            asCoursesLabel.text = "  A&S category requirements met"
             asCoursesLabel.textColor = .blue
         } else {
-            asCoursesLabel.text = "A&S category requirements NOT met"
+            asCoursesLabel.text = "  A&S category requirements NOT met"
             asCoursesLabel.textColor = .red
         }
         view.addSubview(asCoursesLabel)
@@ -73,10 +76,10 @@ class requirementsViewController: UIViewController {
         breadthLabel.backgroundColor = .white
         breadthLabel.translatesAutoresizingMaskIntoConstraints = false
         if meetsBreadth(reqsMet) {
-            breadthLabel.text = "Breadth requirements met"
+            breadthLabel.text = "  Breadth requirements met"
             breadthLabel.textColor = .blue
         } else {
-            breadthLabel.text = "Breadth requirements NOT met"
+            breadthLabel.text = "  Breadth requirements NOT met"
             breadthLabel.textColor = .red
         }
         view.addSubview(breadthLabel)
@@ -85,35 +88,35 @@ class requirementsViewController: UIViewController {
     func setupConstraints() {
         // Setup the constraints for our views
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: fwsLabel.topAnchor)
             ])
         NSLayoutConstraint.activate([
-            fwsLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            fwsLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            fwsLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            fwsLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             fwsLabel.topAnchor.constraint(equalTo: tableView.bottomAnchor),
             fwsLabel.bottomAnchor.constraint(equalTo: pbs_mqrLabel.topAnchor),
             fwsLabel.heightAnchor.constraint(equalToConstant: cellHeight)
             ])
         NSLayoutConstraint.activate([
-            pbs_mqrLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            pbs_mqrLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            pbs_mqrLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            pbs_mqrLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             pbs_mqrLabel.topAnchor.constraint(equalTo: fwsLabel.bottomAnchor),
             pbs_mqrLabel.bottomAnchor.constraint(equalTo: asCoursesLabel.topAnchor),
             pbs_mqrLabel.heightAnchor.constraint(equalToConstant: cellHeight)
             ])
         NSLayoutConstraint.activate([
-            asCoursesLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            asCoursesLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            asCoursesLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            asCoursesLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             asCoursesLabel.topAnchor.constraint(equalTo: pbs_mqrLabel.bottomAnchor),
             asCoursesLabel.bottomAnchor.constraint(equalTo: breadthLabel.topAnchor),
             asCoursesLabel.heightAnchor.constraint(equalToConstant: cellHeight)
             ])
         NSLayoutConstraint.activate([
-            breadthLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            breadthLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            breadthLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            breadthLabel.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             breadthLabel.topAnchor.constraint(equalTo: asCoursesLabel.bottomAnchor),
             breadthLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             breadthLabel.heightAnchor.constraint(equalToConstant: cellHeight)

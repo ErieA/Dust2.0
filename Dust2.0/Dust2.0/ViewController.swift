@@ -113,6 +113,9 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         view.addSubview(checkCoursesButton)
         
         classTableView = UITableView(frame: .zero)
+        classTableView.layer.cornerRadius = 5
+        classTableView.layer.borderWidth = 1
+        classTableView.layer.borderColor = UIColor.gray.cgColor
         classTableView.translatesAutoresizingMaskIntoConstraints = false
         classTableView.delegate = self
         classTableView.dataSource = self
@@ -142,7 +145,7 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         semesterField.setTitleColor(.black, for: .normal)
         view.addSubview(semesterField)
         
-        let yearOptions = ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"]
+        let yearOptions = ["14","15","16","17","18","19"]
         yearField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: yearOptions.reversed(), type: "Year")
         yearField.layer.cornerRadius = 5
         yearField.layer.borderWidth = 1
@@ -370,6 +373,9 @@ class dropDown : UIButton, dropDownProtocol {
         super.init(frame: frame)
         self.type = type
         dropView = dropDownView.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: options, type: type)
+        dropView.layer.cornerRadius = 5
+        dropView.layer.borderWidth = 1
+        dropView.layer.borderColor = UIColor.gray.cgColor
         dropView.delegate = self
         dropView.updateDelegate = updateDelegate
         dropView.translatesAutoresizingMaskIntoConstraints = false
