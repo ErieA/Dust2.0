@@ -167,10 +167,10 @@ class requirementsViewController: UIViewController {
         var numPBS_AS = 0
         var numMQR_AS = 0
         for r in reqs {
-            if r == "(PBS-AS)" {
+            if r == "(PBS-AS)" || r == "(PBS)" {
                 numPBS_AS += 1
             }
-            if r == "(MQR-AS)" {
+            if r == "(MQR-AS)" || r == "(PBS)" {
                 numMQR_AS += 1
             }
         }
@@ -187,19 +187,19 @@ class requirementsViewController: UIViewController {
         var numLA_AS = 0
         var numSBA_AS = 0
         for r in req {
-            if r == "(CA-AS)" {
+            if r == "(CA-AS)" || r == "(CA)" {
                numCA_AS += 1
             }
-            if r == "(HA-AS)" {
+            if r == "(HA-AS)" || r == "(HA)" {
                 numHA_AS += 1
             }
-            if r == "(KCM-AS)" {
+            if r == "(KCM-AS)" || r == "(KCM)" {
                 numKCM_AS += 1
             }
-            if r == "(LA-AS)" {
+            if r == "(LA-AS)" || r == "(LA)"{
                 numLA_AS += 1
             }
-            if r == "(SBA-AS)" {
+            if r == "(SBA-AS)" || r == "(SBA)" {
                 numSBA_AS += 1
             }
         }
