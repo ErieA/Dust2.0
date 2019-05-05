@@ -11,9 +11,9 @@ Dust2.0:
 - https://github.com/duboisbarron/appdev-project
 
 ### Screenshots:
-![screenshot 1](https://i.imgur.com/7qT7kaS.png =100x)
-![screenshot 2](https://i.imgur.com/9y6x3bb.png =100x)
-![screenshot 3](https://i.imgur.com/7KkEz4g.png =100x)
+<img src="https://i.imgur.com/7qT7kaS.png" alt="screenshot 1" width="100"/>
+<img src="https://i.imgur.com/9y6x3bb.png" alt="screenshot 2" width="100"/>
+<img src="https://i.imgur.com/7KkEz4g.png" alt="screenshot 3" width="100"/>
 
 ### Description:
 - Our application allows users to input a class and find out which Arts Distribution requirements that class will fill. Users select a class by year ("19"), semester("FA"), subject (“MATH”), and course number (“1920”). Our backend returns a list of the distribution requirements that that class will fill within Arts & Sciences (for example, “MQR-AS” classes fill the “Math & Quantitative Reasoning” requirements).
