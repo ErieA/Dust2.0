@@ -20,11 +20,11 @@ class Class : Equatable {
         case FA, SP, SU, WI
     }
     var course : String
-    var courseNum : Int
+    var courseNum : String
     var yearTaken : Int
     var semesterTaken : Semester
     
-    init(course: String, courseNum: Int, yearTaken: Int, semesterTaken: Semester){
+    init(course: String, courseNum: String, yearTaken: Int, semesterTaken: Semester){
         self.course = course
         self.courseNum = courseNum
         self.yearTaken = yearTaken
@@ -57,5 +57,9 @@ struct Response : Codable {
 struct getResponse : Codable {
     var success : Bool
     var data : [String]
+}
+struct numberResponse : Codable {
+    var success : Bool
+    var data : [Int]
 }
 

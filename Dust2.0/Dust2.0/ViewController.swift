@@ -14,6 +14,7 @@ protocol fieldUpdatersProtocol {
     func update(_ clss: String, type: String)
     func currentYr() -> String
     func currentSem() -> String
+    func currentSubject() -> String
 }
 class ViewController: UIViewController, fieldUpdatersProtocol {
     func update(_ clss: String, type: String) {
@@ -23,6 +24,8 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
             self.currentYear = Int(clss) ?? -1
         } else if type == "Semester" {
             self.currentSemester = clss
+        } else if type == "Number" {
+            self.currentClassNumber = clss
         }
     }
     func currentYr() -> String {
@@ -31,10 +34,15 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
     func currentSem() -> String{
         return currentSemester
     }
+    func currentSubject() -> String {
+        return currentClass
+    }
+    
     
     var currentClass : String = ""
     var currentYear : Int = -1
     var currentSemester : String = ""
+    var currentClassNumber : String = ""
     var classLabel: UILabel!
     var yearLabel: UILabel!
     var semesterLabel: UILabel!
@@ -43,7 +51,7 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
     var classField: dropDown!
     var yearField: dropDown!
     var semesterField: dropDown!
-    var classNumField: UITextField!
+    var classNumField: dropDown!
     
     var padding: CGFloat = 16
     
@@ -83,15 +91,6 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         semesterLabel.text = "Semester:"
         view.addSubview(semesterLabel)
         
-        classNumField = UITextField()
-        classNumField.translatesAutoresizingMaskIntoConstraints = false
-        classNumField.isEnabled = true
-        classNumField.delegate = self
-        classNumField.layer.cornerRadius = 5
-        classNumField.layer.borderWidth = 1
-        classNumField.layer.borderColor = UIColor.gray.cgColor
-        view.addSubview(classNumField)
-        
         addButton = UIButton()
         addButton.layer.cornerRadius = 5
         addButton.layer.borderWidth = 1
@@ -121,6 +120,17 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
         classTableView.dataSource = self
         classTableView.register(courseTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         view.addSubview(classTableView)
+        
+        classNumField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: [], type: "Number")
+        classNumField.layer.cornerRadius = 5
+        classNumField.layer.borderWidth = 1
+        classNumField.layer.borderColor = UIColor.gray.cgColor
+        classNumField.updateDelegate = self
+        classNumField.translatesAutoresizingMaskIntoConstraints = false
+        classNumField.isEnabled = true
+        classNumField.setTitle("Select Number", for: .normal)
+        classNumField.setTitleColor(.black, for: .normal)
+        view.addSubview(classNumField)
         
         classField = dropDown(frame: CGRect(x: 0, y: 0, width: 0, height: 0), options: [], type: "Class")
         classField.layer.cornerRadius = 5
@@ -220,10 +230,10 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
     
     @objc func classAdder() {
         let course = currentClass
-        let classNum = Int(classNumField.text ?? "-1") ?? -1
+        let classNum = currentClassNumber
         let semester = currentSemester
         let year = currentYear
-        if course != "", classNum != -1, semester != "", year != -1 {
+        if course != "", classNum != "", semester != "", year != -1 {
             if semester == "FA" {
                 let newClass = Class(course: course, courseNum: classNum, yearTaken: year, semesterTaken: .FA)
                 if courses.firstIndex(of: newClass) == nil {
@@ -261,7 +271,7 @@ class ViewController: UIViewController, fieldUpdatersProtocol {
             for course in courses {
                 let jsonObjCourse : [String:Any] = [
                     "subject" : course.course,
-                    "number" : course.courseNum,
+                    "number" : Int(course.courseNum)!,
                     "semester": course.getSem(),
                     "year" : course.yearTaken,
                 ]
@@ -404,6 +414,18 @@ class dropDown : UIButton, dropDownProtocol {
             let semester = updateDelegate.currentSem() + updateDelegate.currentYr()
             NetworkManager.getSemesterClasses(semester: semester) { (response) in
                 self.dropView.updateOptions(newOptions: response.data)
+            }
+        }
+        if updateDelegate.currentSem() != "" && updateDelegate.currentYr() != "-1" && updateDelegate.currentSubject() != "" && type == "Number" {
+            let semeYr = updateDelegate.currentSem() + updateDelegate.currentYr()
+            let subject = updateDelegate.currentSubject()
+            NetworkManager.getNumbers(semYr: semeYr, subject: subject) { (numberResponse) in
+                var newOptions : [String] = []
+                for num in numberResponse.data {
+                    newOptions.append(String(num))
+                }
+                newOptions.sort()
+                self.dropView.updateOptions(newOptions: newOptions)
             }
         }
         if isOpen {

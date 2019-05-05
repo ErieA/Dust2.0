@@ -62,7 +62,7 @@ class courseTableViewCell: UITableViewCell {
     
     func configure(for course: Class) {
         subjectLabel.text = course.course
-        numberLabel.text = String(course.courseNum)
+        numberLabel.text = course.courseNum
         semesterLabel.text = course.getSem()
         yearLabel.text = String(course.yearTaken)
     }
